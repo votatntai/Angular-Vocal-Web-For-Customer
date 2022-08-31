@@ -1,0 +1,215 @@
+<main id="main" class="main">
+    <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="default" color="#ffc107" type="ball-scale-multiple"
+        [fullScreen]="true">
+        <p class="text-warning">Đang xử lý...</p>
+    </ngx-spinner>
+    <div *ngIf="loading" class="loading-spinner d-flex justify-content-center my-auto">
+        <div class="spinner-border my-auto text-primary" role="status">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+    <div *ngIf="!loading" class="content">
+        <div class="row">
+
+            <div class="col-lg-4 col-md-4 col-sm-12 mt-3 ">
+                <div class="card">
+                    <div *ngIf="!vocal.isPrivate"
+                        class="card-header bg-dark text-warning text-center fontweight-bold rounded-b">
+                        Miễn Phí</div>
+                    <div *ngIf="vocal.isPrivate"
+                        class="card-header bg-warning text-dark text-center fontweight-bold rounded-b">
+                        Vocal Premium</div>
+                    <div class="card-body text-center p-0">
+                        <div class="thumbnail my-3">
+                            <img class="image text-center {{ rotate }}" src="{{vocal.image || defaultTumbnail}}"
+                                alt="Thumbnail">
+                        </div>
+                        <audio #audio *ngIf="vocal" controls class="mx-auto mb-3" (play)="onplay(audio)"
+                            (pause)="onpause(audio)" (canplay)="canplay(audio)">
+                            <source src="" type="audio/ogg" />
+                            <source src="{{ vocal.url }}" type="audio/mpeg" />
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="card-footer bg-transparent border-success">
+                        <h5 class="fontweight-bold">{{ vocal.name }}</h5>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <p class="card-text fontweight-italic">{{ vocal.artist.firstName
+                                    }} {{
+                                    vocal.artist.lastName
+                                    }}</p>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 text-right">
+                                <span class="badge rounded-pill bg-success p-2">{{ vocal.type }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8 col-md-8 col-sm-12 mt-3 profile">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row mt-3">
+                            <p class="text-warning text-uppercase fontweight-bold">Thông tin Vocal</p>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <p class="text-uppercase fontweight-bold text-left">Thông tin chi tiết</p>
+                                <div class="mt-3 vocal-info">
+                                    <div class="vocal-info">
+                                        <label class="fontweight-bold text-muted">Chủ sở hữu</label>
+                                        <span routerLink="" class="fontweight-bold pointer badge bg-dark ml-1 p-2"> {{
+                                            vocal.artist.firstName }} {{ vocal.artist.lastName }}</span>
+                                    </div>
+                                    <div class="vocal-info">
+
+                                        <label class="fontweight-bold text-muted">Giọng đọc</label>
+                                        <bar-rating [(rate)]="vocalRating.totalVoiceRating" [max]="5" [readOnly]="true">
+                                            <ng-template ratingActive>
+                                                <i class="bi bi-star-fill" style="margin: 2px; color: #edb867"></i>
+                                            </ng-template>
+                                            <ng-template ratingInactive>
+                                                <i class="bi bi-star-fill" style="margin: 2px; color: #d2d2d2"></i>
+                                            </ng-template>
+                                            <ng-template ratingFraction>
+                                                <i class="bi bi-star-half" style="margin: 2px; color: #edb867"></i>
+                                            </ng-template>
+                                        </bar-rating>
+                                    </div>
+                                    <div class="vocal-info">
+
+                                        <label class="fontweight-bold text-muted">Nội dung</label>
+                                        <bar-rating [(rate)]="vocalRating.totalContentRating" [max]="5"
+                                            [readOnly]="true">
+                                            <ng-template ratingActive>
+                                                <i class="bi bi-star-fill" style="margin: 2px; color: #edb867"></i>
+                                            </ng-template>
+                                            <ng-template ratingInactive>
+                                                <i class="bi bi-star-fill" style="margin: 2px; color: #d2d2d2"></i>
+                                            </ng-template>
+                                            <ng-template ratingFraction>
+                                                <i class="bi bi-star-half" style="margin: 2px; color: #edb867"></i>
+                                            </ng-template>
+                                        </bar-rating>
+                                    </div>
+                                    <div class="vocal-info">
+                                        <label class="fontweight-bold text-muted">Tổng thời gian được nghe</label>
+                                        <span class="text-primary fontweight-bold"> {{ vocal.listeningTime | hour
+                                            }}</span>
+                                    </div>
+                                    <div class="vocal-info">
+                                        <p *ngIf="vocal.description" class="text-justify">
+                                            {{ vocal.description }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="row">
+                                    <div class="col-ld-6 col-md-6 col-sm-6">
+                                        <p class="text-uppercase fontweight-bold text-left">Nhận xét</p>
+                                    </div>
+                                    <div class="col-ld-6 col-md-6 col-sm-6">
+
+                                    </div>
+                                </div>
+                                <label *ngIf="vocalRating.voicesRating.length == 0"
+                                    class="fontweight-italic text-muted">Chưa có bình luận</label>
+                                <div *ngFor="let comment of vocalRating.voicesRating" class="vocal-comment">
+                                    <div class="card mb-1">
+                                        <div class="card-body mt-3">
+                                            <bar-rating [rate]="(comment.voiceRating + comment.contentRating) / 2"
+                                                [max]="5" [readOnly]="true">
+                                                <ng-template ratingActive>
+                                                    <i class="bi bi-star-fill" style="margin: 2px; color: #edb867"></i>
+                                                </ng-template>
+                                                <ng-template ratingInactive>
+                                                    <i class="bi bi-star-fill" style="margin: 2px; color: #d2d2d2"></i>
+                                                </ng-template>
+                                                <ng-template ratingFraction>
+                                                    <i class="bi bi-star-half" style="margin: 2px; color: #edb867"></i>
+                                                </ng-template>
+                                            </bar-rating>
+                                            <label for="comment" class="fontweight-bold text-muted">{{ comment.firstName
+                                                }} {{ comment.lastName }}</label>
+                                            <div class="description">
+                                                <span class="fontweight-italic text-muted">{{ comment.description
+                                                    }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form *ngIf="activeComment" [formGroup]="ratingForm"
+                                    (ngSubmit)="postVocalRating(vocal.voiceId)">
+                                    <div class="vocal-info">
+                                        <label for="comment" class="form-label fontweight-bold text-muted">Bình luận của
+                                            bạn</label><span class="fontweight-italic text-muted"> (ít nhất 5 ký
+                                            tự)</span>
+                                        <textarea type="email" class="form-control" id="description" rows="3" [ngClass]="(ratingForm.get('description')!.touched || ratingForm.get('description')!.dirty)
+                                                    && ratingForm.get('description')!.errors ? 'is-invalid' : '' || 
+                                                    (ratingForm.get('description')!.touched || ratingForm.get('description')!.dirty) &&
+                                                    !ratingForm.get('description')!.invalid ? 'is-valid' : ''"
+                                            formControlName="description"
+                                            placeholder="Mô tả chi tiết về dự án"></textarea>
+                                    </div>
+                                    <div class="vocal-info">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                <label for="voice-rate"
+                                                    class="form-label fontweight-bold text-muted">Giọng đọc</label>
+                                                <bar-rating formControlName="voiceRating" id="voice-rate" [max]="5"
+                                                    [required]="true">
+                                                    <ng-template ratingActive>
+                                                        <i class="bi bi-star-fill"
+                                                            style="margin: 2px; color: #edb867"></i>
+                                                    </ng-template>
+                                                    <ng-template ratingInactive>
+                                                        <i class="bi bi-star-fill"
+                                                            style="margin: 2px; color: #d2d2d2"></i>
+                                                    </ng-template>
+                                                    <ng-template ratingFraction>
+                                                        <i class="bi bi-star-half"
+                                                            style="margin: 2px; color: #edb867"></i>
+                                                    </ng-template>
+                                                </bar-rating>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                <label for="content-rate"
+                                                    class="form-label fontweight-bold text-muted">Nội dung</label>
+                                                <bar-rating formControlName="contentRating" id="content-rate" [max]="5"
+                                                    [required]="true">
+                                                    <ng-template ratingActive>
+                                                        <i class="bi bi-star-fill"
+                                                            style="margin: 2px; color: #edb867"></i>
+                                                    </ng-template>
+                                                    <ng-template ratingInactive>
+                                                        <i class="bi bi-star-fill"
+                                                            style="margin: 2px; color: #d2d2d2"></i>
+                                                    </ng-template>
+                                                    <ng-template ratingFraction>
+                                                        <i class="bi bi-star-half"
+                                                            style="margin: 2px; color: #edb867"></i>
+                                                    </ng-template>
+                                                </bar-rating>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="vocal-info">
+                                        <div class="row mt-3">
+                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                <button type="submit" class="btn btn-dark w-100">Đánh Giá</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>

@@ -1,0 +1,251 @@
+<main id="main" class="main">
+
+    <div *ngIf="!loading" class="loading-spinner d-flex justify-content-center my-auto">
+        <div class="spinner-border my-auto text-primary" role="status">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+
+    <div *ngIf="loading" class="content">
+
+        <div class="pagetitle">
+            <h1 class="fontweight-bold">Thông Tin Cá Nhân</h1>
+            <nav>
+                <ol class="breadcrumb fontweight-italic">
+                    <li class="breadcrumb-item">Trang Chính</li>
+                    <li class="breadcrumb-item active">Thông Tin Cá Nhân</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+
+        <section class="section profile">
+            <div class="row">
+                <div class="col-xl-4">
+
+                    <div class="card">
+                        <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                            <img src="{{ customer.avatar || defaultAvatar }}" alt="Profile"
+                                class="center-cropped rounded-circle">
+                            <h2>{{ customer.firstName }} {{ customer.lastName }} </h2>
+                            <h3>{{ customer.email }}</h3>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-xl-8">
+
+                    <div class="card">
+                        <div class="card-body pt-3">
+                            <!-- Bordered Tabs -->
+                            <ul class="nav nav-tabs d-flex">
+
+                                <li class="nav-item flex-fill">
+                                    <button class="nav-link active fontweight-bold text-muted" data-bs-toggle="tab"
+                                        data-bs-target="#profile-overview">Tổng Quan</button>
+                                </li>
+
+                                <li class="nav-item flex-fill">
+                                    <button class="nav-link fontweight-bold text-muted" data-bs-toggle="tab"
+                                        data-bs-target="#profile-edit">Chỉnh
+                                        Sửa</button>
+                                </li>
+
+                                <li class="nav-item flex-fill">
+                                    <button class="nav-link fontweight-bold text-muted" data-bs-toggle="tab"
+                                        data-bs-target="#avatar-update">Thay
+                                        Ảnh</button>
+                                </li>
+
+                                <li class="nav-item">
+                                    <button class="nav-link fontweight-bold text-muted" data-bs-toggle="tab"
+                                        data-bs-target="#profile-change-password">Mật Khẩu</button>
+                                </li>
+
+                            </ul>
+                            <div class="tab-content pt-2">
+
+                                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                                    <!-- <h5 class="card-title">About</h5> -->
+                                    <!-- <p class="small fst-italic">{{ customer.bio || "Chưa có lời giới thiệu" }}</p> -->
+
+                                    <h5 class="card-title">Thông Tin Cá Nhân</h5>
+
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label ">Họ</div>
+                                        <div class="col-lg-9 col-md-8">{{ customer.firstName }}</div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label">Tên</div>
+                                        <div class="col-lg-9 col-md-8">{{ customer.lastName }}</div>
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label">Email</div>
+                                        <div class="col-lg-9 col-md-8">{{ customer.email }}</div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label">Giới Tính</div>
+                                        <div class="col-lg-9 col-md-8">{{ customer.gender }}</div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label">Số Điện Thoại</div>
+                                        <div class="col-lg-9 col-md-8">{{ customer.phone }}</div>
+                                    </div>
+
+                                </div>
+
+                                <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                                    <!-- Profile Edit Form -->
+                                    <form [formGroup]="updateProfileForm" (ngSubmit)="updateProfile()">
+
+                                        <div class="row mb-3">
+                                            <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input name="email" type="email" class="form-control" id="email"
+                                                    value="{{ customer.email }}" readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label for="firstName" class="col-md-4 col-lg-3 col-form-label">Họ</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input type="text" class="form-control" id="firstName" [ngClass]="(updateProfileForm.get('firstName')!.touched || updateProfileForm.get('firstName')!.dirty)
+                                                && updateProfileForm.get('firstName')!.errors ? 'is-invalid' : '' || 
+                                                (updateProfileForm.get('firstName')!.touched || updateProfileForm.get('firstName')!.dirty) &&
+                                                !updateProfileForm.get('firstName')!.invalid ? 'is-valid' : ''"
+                                                    formControlName="firstName">
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label for="lastName" class="col-md-4 col-lg-3 col-form-label">Tên</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input type="text" class="form-control" id="lastName" [ngClass]="(updateProfileForm.get('lastName')!.touched || updateProfileForm.get('lastName')!.dirty)
+                                                && updateProfileForm.get('lastName')!.errors ? 'is-invalid' : '' || 
+                                                (updateProfileForm.get('lastName')!.touched || updateProfileForm.get('lastName')!.dirty) &&
+                                                !updateProfileForm.get('lastName')!.invalid ? 'is-valid' : ''"
+                                                    formControlName="lastName">
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label for="gender" class="col-md-4 col-lg-3 col-form-label">Giới
+                                                Tính</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <select class="form-select" formControlName="gender">
+                                                    <option value="Nam">Nam</option>
+                                                    <option value="Nữ">Nữ</option>
+                                                    <option value="Khác">Khác</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="row text-end">
+                                            <div class="col-md-4 col-lg-3 col-sm-0"></div>
+                                            <div class="col-md-8 col-lg-9 col-sm-12">
+                                                <button type="submit" class="btn btn-dark w-100"
+                                                    [ngClass]="!updateProfileForm.valid ? 'disabled' : ''">
+                                                    <span *ngIf="!btnInfoLoading">Cập Nhật</span>
+                                                    <span *ngIf="btnInfoLoading">
+                                                        <span class="spinner-border spinner-border-sm" role="status"
+                                                            aria-hidden="true"></span>
+                                                        <span class="sr-only"></span>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </form><!-- End Profile Edit Form -->
+
+                                </div>
+
+                                <div class="tab-pane fade profile-edit pt-3" id="profile-change-password">
+                                    <!-- Change Password Form -->
+                                    <form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()">
+
+                                        <div class="row mb-3">
+                                            <label for="change-password-email"
+                                                class="col-md-4 col-lg-3 col-form-label">Email</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input type="email" class="form-control" id="change-password-email"
+                                                    value="{{ customer.email }}" readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Mật
+                                                Khẩu Hiện Tại</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input type="password" class="form-control" id="currentPassword"
+                                                    [ngClass]="(updatePasswordForm.get('currentPassword')!.touched || updatePasswordForm.get('currentPassword')!.dirty)
+                                                 && updatePasswordForm.get('currentPassword')!.errors ? 'is-invalid' : '' || 
+                                                 (updatePasswordForm.get('currentPassword')!.touched || updatePasswordForm.get('currentPassword')!.dirty) &&
+                                                 !updatePasswordForm.get('currentPassword')!.invalid ? 'is-valid' : ''"
+                                                    formControlName="currentPassword">
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">Mật Khẩu
+                                                Mới</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input type="password" class="form-control" id="newPassword" [ngClass]="(updatePasswordForm.get('newPassword')!.touched || updatePasswordForm.get('newPassword')!.dirty)
+                                            && updatePasswordForm.get('newPassword')!.errors ? 'is-invalid' : '' || 
+                                            (updatePasswordForm.get('newPassword')!.touched || updatePasswordForm.get('newPassword')!.dirty) &&
+                                            !updatePasswordForm.get('newPassword')!.invalid ? 'is-valid' : ''"
+                                                    formControlName="newPassword">
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label for="rePassword" class="col-md-4 col-lg-3 col-form-label">Xác Nhận
+                                                Mật Khẩu</label>
+                                            <div class="col-md-8 col-lg-9">
+                                                <input type="password" class="form-control" id="rePassword" [ngClass]="(updatePasswordForm.get('rePassword')!.touched || updatePasswordForm.get('rePassword')!.dirty)
+                                            && updatePasswordForm.get('rePassword')!.errors || updatePasswordForm.get('rePassword')!.hasError('notSame') ? 'is-invalid' : '' || 
+                                            (updatePasswordForm.get('rePassword')!.touched || updatePasswordForm.get('rePassword')!.dirty) &&
+                                            !updatePasswordForm.get('rePassword')!.invalid ? 'is-valid' : ''"
+                                                    formControlName="rePassword">
+                                            </div>
+                                        </div>
+
+                                        <div class="row text-end">
+                                            <div class="col-md-4 col-lg-3 col-sm-0"></div>
+                                            <div class="col-md-8 col-lg-9 col-sm-12">
+                                                <button type="submit" class="btn btn-dark w-100"
+                                                    [ngClass]="!updatePasswordForm.valid ? 'disabled':''">
+                                                    <span *ngIf="!btnPasswordLoading">Cập Nhật</span>
+                                                    <span *ngIf="btnPasswordLoading">
+                                                        <span class="spinner-border spinner-border-sm" role="status"
+                                                            aria-hidden="true"></span>
+                                                        <span class="sr-only"></span>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form><!-- End Change Password Form -->
+
+                                </div>
+
+                                <div class="tab-pane fade pt-3" id="avatar-update">
+                                    <app-avatar></app-avatar>
+                                </div>
+
+
+                            </div><!-- End Bordered Tabs -->
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </div>
+
+</main><!-- End #main -->

@@ -1,0 +1,351 @@
+<main id="main" class="main">
+
+    <div *ngIf="loading" class="loading-spinner d-flex justify-content-center my-auto">
+        <div class="spinner-border my-auto text-primary" role="status">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+
+    <div *ngIf="!loading" class="content">
+
+        <div class="card">
+            <div class="card-header fontweight-bold text-uppercase">Mới Nhất</div>
+            <div class="card-body">
+                <swiper [config]="swiperConfig" [loop]="false" [loopFillGroupWithBlank]="false" [pagination]="{
+          clickable: true
+        }" [navigation]="false" class="audiobookNewSwiper">
+                    <ng-template *ngFor="let vocal of newVocals" swiperSlide>
+                        <div class="card border-success mt-3">
+                            <div *ngIf="!vocal.isPrivate"
+                                class="card-header bg-dark text-warning text-center fontweight-bold rounded-b">
+                                Miễn Phí</div>
+                            <div *ngIf="vocal.isPrivate"
+                                class="card-header bg-warning text-dark text-center fontweight-bold rounded-b">
+                                Vocal Premium</div>
+                            <a routerLink="../vocal/detail/{{ vocal.voiceId }}">
+                                <div class="row">
+                                    <div class="col-ld-6 col-md-6 col-sm-6 my-auto">
+                                        <div class="thumbnail my-3">
+                                            <img src="{{ vocal.image || defaultThumbnail }}" alt="Vocal thumbnail">
+                                        </div>
+                                    </div>
+                                    <div class="col-ld-6 col-md-6 col-sm-6 my-auto">
+                                        <div class="card-body text-center p-0">
+                                            <i class="ri-play-circle-line font-size-50"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="card-footer bg-transparent border-success">
+                                <h5 class="fontweight-bold text-truncate">{{ vocal.name }}</h5>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                        <p class="card-text fontweight-italic text-truncate">{{ vocal.artist.firstName
+                                            }} {{
+                                            vocal.artist.lastName
+                                            }}</p>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-right">
+                                        <span class="badge rounded-pill bg-success text-truncate p-2 w-100">{{
+                                            vocal.type }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </swiper>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header fontweight-bold text-uppercase">Nhạc</div>
+            <div class="card-body">
+                <div class="card-header fontweight-bold text-uppercase fontweight-italic">Top 10 thịnh hành</div>
+                <swiper swiper [config]="swiperConfig" [loop]="false" [loopFillGroupWithBlank]="false" [pagination]="{
+                    clickable: true
+        }" [navigation]="false" class="musicTrendingSwiper">
+                    <ng-template *ngFor="let vocal of musicTrendingVocals" swiperSlide>
+                        <div class="card border-success mt-3">
+                            <div *ngIf="!vocal.isPrivate"
+                                class="card-header bg-dark text-warning text-center fontweight-bold rounded-b">
+                                Miễn Phí</div>
+                            <div *ngIf="vocal.isPrivate"
+                                class="card-header bg-warning text-dark text-center fontweight-bold rounded-b">
+                                Vocal Premium</div>
+                            <a routerLink="../vocal/detail/{{ vocal.voiceId }}">
+                                <div class="row">
+                                    <div class="col-ld-6 col-md-6 col-sm-6 my-auto">
+                                        <div class="thumbnail my-3">
+                                            <img src="{{ vocal.image || defaultThumbnail }}" alt="Vocal thumbnail">
+                                        </div>
+                                    </div>
+                                    <div class="col-ld-6 col-md-6 col-sm-6 my-auto">
+                                        <div class="card-body text-center p-0">
+                                            <i class="ri-play-circle-line font-size-50"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="card-footer bg-transparent border-success">
+                                <h5 class="fontweight-bold text-truncate">{{ vocal.name }}</h5>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                        <p class="card-text fontweight-italic text-truncate">{{ vocal.artist.firstName
+                                            }} {{
+                                            vocal.artist.lastName
+                                            }}</p>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-right">
+                                        <span class="badge rounded-pill bg-success text-truncate p-2 w-100">{{
+                                            vocal.type }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </swiper>
+
+                <div class="card-header fontweight-bold text-uppercase fontweight-italic">Đề Xuất Cho Bạn</div>
+                <swiper [config]="swiperConfig" [loop]="false" [loopFillGroupWithBlank]="false" [pagination]="{
+                    clickable: true
+        }" [navigation]="false" class="musicRecommendSwiper">
+                    <ng-template *ngFor="let vocal of musicRecommendVocals" swiperSlide>
+                        <div class="card border-success mt-3">
+                            <div *ngIf="!vocal.isPrivate"
+                                class="card-header bg-dark text-warning text-center fontweight-bold rounded-b">
+                                Miễn Phí</div>
+                            <div *ngIf="vocal.isPrivate"
+                                class="card-header bg-warning text-dark text-center fontweight-bold rounded-b">
+                                Vocal Premium</div>
+                            <a routerLink="../vocal/detail/{{ vocal.voiceId }}">
+                                <div class="row">
+                                    <div class="col-ld-6 col-md-6 col-sm-6 my-auto">
+                                        <div class="thumbnail my-3">
+                                            <img src="{{ vocal.image || defaultThumbnail }}" alt="Vocal thumbnail">
+                                        </div>
+                                    </div>
+                                    <div class="col-ld-6 col-md-6 col-sm-6 my-auto">
+                                        <div class="card-body text-center p-0">
+                                            <i class="ri-play-circle-line font-size-50"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="card-footer bg-transparent border-success">
+                                <h5 class="fontweight-bold text-truncate">{{ vocal.name }}</h5>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                        <p class="card-text fontweight-italic text-truncate">{{ vocal.artist.firstName
+                                            }} {{
+                                            vocal.artist.lastName
+                                            }}</p>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-right">
+                                        <span class="badge rounded-pill bg-success text-truncate p-2 w-100">{{
+                                            vocal.type }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </swiper>
+
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header fontweight-bold text-uppercase">Nghệ Thuật</div>
+            <div class="card-body">
+                <div class="card-header fontweight-bold text-uppercase fontweight-italic">Top 10 thịnh hành</div>
+                <swiper [config]="swiperConfig" [loop]="false" [loopFillGroupWithBlank]="false" [pagination]="{
+                    clickable: true
+        }" [navigation]="false" class="artTrendingSwiper">
+                    <ng-template *ngFor="let vocal of artTrendingVocals" swiperSlide>
+                        <div class="card border-success mt-3">
+                            <div *ngIf="!vocal.isPrivate"
+                                class="card-header bg-dark text-warning text-center fontweight-bold rounded-b">
+                                Miễn Phí</div>
+                            <div *ngIf="vocal.isPrivate"
+                                class="card-header bg-warning text-dark text-center fontweight-bold rounded-b">
+                                Vocal Premium</div>
+                            <a routerLink="../vocal/detail/{{ vocal.voiceId }}">
+                                <div class="row">
+                                    <div class="col-ld-6 col-md-6 col-sm-6 my-auto">
+                                        <div class="thumbnail my-3">
+                                            <img src="{{ vocal.image || defaultThumbnail }}" alt="Vocal thumbnail">
+                                        </div>
+                                    </div>
+                                    <div class="col-ld-6 col-md-6 col-sm-6 my-auto">
+                                        <div class="card-body text-center p-0">
+                                            <i class="ri-play-circle-line font-size-50"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="card-footer bg-transparent border-success">
+                                <h5 class="fontweight-bold text-truncate">{{ vocal.name }}</h5>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                        <p class="card-text fontweight-italic text-truncate">{{ vocal.artist.firstName
+                                            }} {{
+                                            vocal.artist.lastName
+                                            }}</p>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-right">
+                                        <span class="badge rounded-pill bg-success text-truncate p-2 w-100">{{
+                                            vocal.type }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </swiper>
+
+                <div class="card-header fontweight-bold text-uppercase fontweight-italic">Đề Xuất Cho Bạn</div>
+                <swiper [config]="swiperConfig" [loop]="false" [loopFillGroupWithBlank]="false" [pagination]="{
+                    clickable: true
+        }" [navigation]="false" class="artRecommendSwiper">
+                    <ng-template *ngFor="let vocal of artRecommendVocals" swiperSlide>
+                        <div class="card border-success mt-3">
+                            <div *ngIf="!vocal.isPrivate"
+                                class="card-header bg-dark text-warning text-center fontweight-bold rounded-b">
+                                Miễn Phí</div>
+                            <div *ngIf="vocal.isPrivate"
+                                class="card-header bg-warning text-dark text-center fontweight-bold rounded-b">
+                                Vocal Premium</div>
+                            <a routerLink="../vocal/detail/{{ vocal.voiceId }}">
+                                <div class="row">
+                                    <div class="col-ld-6 col-md-6 col-sm-6 my-auto">
+                                        <div class="thumbnail my-3">
+                                            <img src="{{ vocal.image || defaultThumbnail }}" alt="Vocal thumbnail">
+                                        </div>
+                                    </div>
+                                    <div class="col-ld-6 col-md-6 col-sm-6 my-auto">
+                                        <div class="card-body text-center p-0">
+                                            <i class="ri-play-circle-line font-size-50"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="card-footer bg-transparent border-success">
+                                <h5 class="fontweight-bold text-truncate">{{ vocal.name }}</h5>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                        <p class="card-text fontweight-italic text-truncate">{{ vocal.artist.firstName
+                                            }} {{
+                                            vocal.artist.lastName
+                                            }}</p>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-right">
+                                        <span class="badge rounded-pill bg-success text-truncate p-2 w-100">{{
+                                            vocal.type }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </swiper>
+
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header fontweight-bold text-uppercase">Sách Nói</div>
+            <div class="card-body">
+                <div class="card-header fontweight-bold text-uppercase fontweight-italic">Top 10 thịnh hành</div>
+                <swiper [config]="swiperConfig" [loop]="false" [loopFillGroupWithBlank]="false" [pagination]="{
+                    clickable: true
+        }" [navigation]="false" class="audiobookTrendingSwiper">
+                    <ng-template *ngFor="let vocal of audiobookTrendingVocals" swiperSlide>
+                        <div class="card border-success mt-3">
+                            <div *ngIf="!vocal.isPrivate"
+                                class="card-header bg-dark text-warning text-center fontweight-bold rounded-b">
+                                Miễn Phí</div>
+                            <div *ngIf="vocal.isPrivate"
+                                class="card-header bg-warning text-dark text-center fontweight-bold rounded-b">
+                                Vocal Premium</div>
+                            <a routerLink="../vocal/detail/{{ vocal.voiceId }}">
+                                <div class="row">
+                                    <div class="col-ld-6 col-md-6 col-sm-6 my-auto">
+                                        <div class="thumbnail my-3 mx-auto">
+                                            <img src="{{ vocal.image || defaultThumbnail }}" alt="Vocal thumbnail">
+                                        </div>
+                                    </div>
+                                    <div class="col-ld-6 col-md-6 col-sm-6 my-auto">
+                                        <div class="card-body text-center p-0">
+                                            <i class="ri-play-circle-line font-size-50"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="card-footer bg-transparent border-success">
+                                <h5 class="fontweight-bold text-truncate">{{ vocal.name }}</h5>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                        <p class="card-text fontweight-italic text-truncate">{{ vocal.artist.firstName
+                                            }} {{
+                                            vocal.artist.lastName
+                                            }}</p>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-right">
+                                        <span class="badge rounded-pill bg-success text-truncate p-2 w-100">{{
+                                            vocal.type }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </swiper>
+
+                <div class="card-header fontweight-bold text-uppercase fontweight-italic">Đề Xuất Cho Bạn</div>
+                <swiper [config]="swiperConfig" [loop]="false" [loopFillGroupWithBlank]="false" [pagination]="{
+                    clickable: true
+        }" [navigation]="false" class="audiobookRecommendSwiper">
+                    <ng-template *ngFor="let vocal of audiobookRecommendVocals" swiperSlide>
+                        <div class="card border-success mt-3">
+                            <div *ngIf="!vocal.isPrivate"
+                                class="card-header bg-dark text-warning text-center fontweight-bold rounded-b">
+                                Miễn Phí</div>
+                            <div *ngIf="vocal.isPrivate"
+                                class="card-header bg-warning text-dark text-center fontweight-bold rounded-b">
+                                Vocal Premium</div>
+                            <a routerLink="../vocal/detail/{{ vocal.voiceId }}">
+                                <div class="row">
+                                    <div class="col-ld-6 col-md-6 col-sm-6 my-auto">
+                                        <div class="thumbnail my-3">
+                                            <img src="{{ vocal.image || defaultThumbnail }}" alt="Vocal thumbnail">
+                                        </div>
+                                    </div>
+                                    <div class="col-ld-6 col-md-6 col-sm-6 my-auto">
+                                        <div class="card-body text-center p-0">
+                                            <i class="ri-play-circle-line font-size-50"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="card-footer bg-transparent border-success">
+                                <h5 class="fontweight-bold text-truncate">{{ vocal.name }}</h5>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                        <p class="card-text fontweight-italic text-truncate">{{ vocal.artist.firstName
+                                            }} {{
+                                            vocal.artist.lastName
+                                            }}</p>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-right">
+                                        <span class="badge rounded-pill bg-success text-truncate p-2 w-100">{{
+                                            vocal.type
+                                            }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </swiper>
+
+            </div>
+        </div>
+
+    </div>
+
+</main>

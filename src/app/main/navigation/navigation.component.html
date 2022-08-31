@@ -1,0 +1,155 @@
+<header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="d-flex align-items-center justify-content-between">
+        <a routerLink="" class="logo d-flex align-items-center">
+            <img src="assets/img/logo.png" alt="">
+            <span class="d-none d-lg-block">Vocal</span>
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div>
+    <!-- End Logo -->
+
+    <!-- <div class="search-bar">
+        <form class="search-form d-flex align-items-center">
+            <input type="text" name="query" placeholder="Tìm kiếm" title="Enter search keyword" />
+            <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+        </form>
+    </div> -->
+    <!-- End Search Bar -->
+
+    <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-center">
+            <li class="nav-item d-block d-lg-none">
+                <a class="nav-link nav-icon search-bar-toggle">
+                    <i class="bi bi-search"></i>
+                </a>
+            </li>
+            <!-- End Search Icon-->
+            <li class="nav-item dropdown pe-3">
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                    <img src="{{ customer.avatar || defaultAvatar }}" alt="Profile"
+                        class="mini-center-cropped rounded-circle" />
+                    <span class="d-none d-md-block dropdown-toggle ps-2">{{ customer.firstName || "User" }} {{
+                        customer.lastName
+                        }}</span> </a><!-- End Profile Iamge Icon -->
+
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                    <li class="dropdown-header">
+                        <h6>{{ customer.firstName || "Username" }} {{ customer.lastName }}</h6>
+                        <span>{{ customer.email || "email@gmail.com" }}</span>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider" />
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" routerLink="/main/profile">
+                            <i class="bi bi-person"></i>
+                            <span>Thông Tin Cá Nhân</span>
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider" />
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" routerLink="/main/balance">
+                            <i class="ri ri-wallet-3-line"></i>
+                            <span>Số Dư <span class="text-primary">{{ balance | currency: "VND" }}</span></span>
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider" />
+                    </li>
+
+                    <li>
+                        <hr class="dropdown-divider" />
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" (click)="signOut()">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Đăng Xuất</span>
+                        </a>
+                    </li>
+                </ul>
+                <!-- End Profile Dropdown Items -->
+            </li>
+        </ul>
+    </nav>
+    <!-- End Icons Navigation -->
+</header>
+<!-- End Header -->
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+            <a class="nav-link collapsed" routerLink="/main/home">
+                <i class="ri-home-line"></i>
+                <span>Trang Chủ</span>
+            </a>
+        </li>
+        <!-- End Home Page Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" routerLink="/main/profile">
+                <i class="ri-user-3-line"></i>
+                <span>Thông Tin Cá Nhân</span>
+            </a>
+        </li>
+        <!-- End Profile Page Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" routerLink="/main/jobs/create">
+                <i class="ri-file-add-line"></i>
+                <span>Tạo Mới Dự Án</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#task-list" data-bs-toggle="collapse" href="#"
+                aria-expanded="false">
+                <i class="bx bx-task"></i><span>Quản Lý Công Việc</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="task-list" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a routerLink="/main/jobs/pending">
+                        <i class="ri-timer-flash-line text-info"></i><span>Chờ Xác Nhận</span>
+                    </a>
+                </li>
+                <li>
+                    <a routerLink="/main/jobs/processing">
+                        <i class="ri-lightbulb-line text-primary"></i><span>Đang Tiến Hành</span>
+                    </a>
+                </li>
+                <li>
+                    <a routerLink="/main/jobs/done">
+                        <i class="ri-checkbox-line text-success"></i><span>Đã Hoàn Thành</span>
+                    </a>
+                </li>
+                <li>
+                    <a routerLink="/main/jobs/waiting">
+                        <i class="ri-compass-4-line text-warning"></i><span>Chờ Phê Duyệt</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" routerLink="/main/balance">
+                <i class="ri-wallet-3-line"></i>
+                <span>Quản Lý Số Dư</span>
+            </a>
+        </li>
+        <!-- End Wallet Page Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" routerLink="/main/subscription">
+                <i class="ri-vip-line text-primary"></i>
+                <span>Vocal Premium</span>
+            </a>
+        </li>
+
+    </ul>
+</aside>
+<!-- End Sidebar-->

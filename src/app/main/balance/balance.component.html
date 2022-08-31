@@ -1,0 +1,70 @@
+<main id="main" class="main">
+
+    <div *ngIf="!loading" class="loading-spinner d-flex justify-content-center my-auto">
+        <div class="spinner-border my-auto text-primary" role="status">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+    <div *ngIf="loading" class="content">
+
+        <div class="pagetitle">
+            <h1 class="fontweight-bold">Quản Lý Số Dư</h1>
+            <nav>
+                <ol class="breadcrumb fontweight-italic">
+                    <li class="breadcrumb-item">Trang Chính</li>
+                    <li class="breadcrumb-item active">Quản Lý Số Dư</li>
+                </ol>
+            </nav>
+        </div>
+
+        <section class="profile">
+            <div class="col-xl-4 mx-auto">
+                <div class="card">
+                    <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                        <img src="{{ artist.avatar }}" alt="Profile" class="center-cropped rounded-circle">
+                        <h2 class="fontweight-bold">{{ artist.firstName }} {{ artist.lastName }}</h2>
+                        <h1 class="text-primary fontweight-bold mt-2">{{ balance | currency: "VND" }}</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-12">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="card">
+                            <div class="card-header fontweight-bold">Thông tin Subscription</div>
+                            <div class="card-body">
+                                <div class="mt-4" *ngIf="!subscription.isSubscription">
+                                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                        Bạn chưa đăng ký gói <span
+                                            class="fontweight-bold fontweight-italic">Premium</span> của
+                                        Vocal, hãy đăng ký để có được những trải nghiệm tốt nhất
+                                    </div>
+                                </div>
+                                <div class="mt-4" *ngIf="subscription.isSubscription">
+                                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                        Gói <span class="fontweight-bold fontweight-italic">Premium</span> có hạn sử
+                                        dụng đến:
+                                        <span class="fontweight-bold fontweight-italic">
+                                            {{ subscription.subscriptionExpired | date:'shortDate'}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="card">
+                            <div class="card-header fontweight-bold">Nạp tiền vào tài khoản</div>
+                            <div class="card-body">
+                                <div class="alert alert-info alert-dismissible fade show mt-4" role="alert">
+                                    Tính năng nạp tiền qua Momo đang phát triển
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+</main>

@@ -1,0 +1,144 @@
+<main id="main" class="main">
+    <div *ngIf="loading" class="loading-spinner d-flex justify-content-center my-auto">
+        <div class="spinner-border my-auto text-primary" role="status">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+    <div *ngIf="!loading" class="content">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title fontweight-bold text-uppercase">Tạo Mới Dự Án</h5>
+
+                <!-- Multi Columns Form -->
+                <form [formGroup]="createForm" (ngSubmit)="formSubmit()">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                            <div class="col-md-12">
+                                <label for="name" class="form-label card-title text-dark">Tên dự án</label>
+                                <input type="text" class="form-control" id="name" [ngClass]="(createForm.get('name')!.touched || createForm.get('name')!.dirty)
+                            && createForm.get('name')!.errors ? 'is-invalid' : '' || 
+                            (createForm.get('name')!.touched || createForm.get('name')!.dirty) &&
+                            !createForm.get('name')!.invalid ? 'is-valid' : ''" formControlName="name"
+                                    placeholder="Tên dự án">
+                            </div>
+                            <div class="col-md-12">
+                                <label for="description" class="form-label card-title text-dark">Mô tả dự
+                                    án</label><span class="fontweight-italic"> (ít nhất 50 ký tự)</span>
+                                <textarea type="email" class="form-control" id="description" rows="4" [ngClass]="(createForm.get('description')!.touched || createForm.get('description')!.dirty)
+                                                && createForm.get('description')!.errors ? 'is-invalid' : '' || 
+                                                (createForm.get('description')!.touched || createForm.get('description')!.dirty) &&
+                                                !createForm.get('description')!.invalid ? 'is-valid' : ''"
+                                    formControlName="description" placeholder="Mô tả chi tiết về dự án"></textarea>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="minAge" class="form-label card-title text-dark">Yêu cầu độ tuổi thấp
+                                        nhất</label>
+                                    <input type="number" step="1" class="form-control" id="minAge" [ngClass]="(createForm.get('minAge')!.touched || createForm.get('minAge')!.dirty)
+                                                && createForm.get('minAge')!.errors ? 'is-invalid' : '' || 
+                                                (createForm.get('minAge')!.touched || createForm.get('minAge')!.dirty) &&
+                                                !createForm.get('minAge')!.invalid ? 'is-valid' : ''"
+                                        formControlName="minAge" placeholder="18 đến 65">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="maxAge" class="form-label card-title text-dark">Yêu cầu độ tuổi cao
+                                        nhất</label>
+                                    <input type="number" step="1" class="form-control" id="maxAge" [ngClass]="(createForm.get('maxAge')!.touched || createForm.get('maxAge')!.dirty)
+                                                && createForm.get('maxAge')!.errors ? 'is-invalid' : '' || 
+                                                (createForm.get('maxAge')!.touched || createForm.get('maxAge')!.dirty) &&
+                                                !createForm.get('maxAge')!.invalid ? 'is-valid' : ''"
+                                        formControlName="maxAge" placeholder="18 đến 65">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="minAge" class="form-label card-title text-dark">Ngày bắt đầu</label>
+                                    <input type="date" class="form-control" id="startDate" [ngClass]="(createForm.get('startDate')!.touched || createForm.get('startDate')!.dirty)
+                                                && createForm.get('startDate')!.errors ? 'is-invalid' : '' || 
+                                                (createForm.get('startDate')!.touched || createForm.get('startDate')!.dirty) &&
+                                                !createForm.get('startDate')!.invalid ? 'is-valid' : ''"
+                                        formControlName="startDate">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="minAge" class="form-label card-title text-dark">Ngày kết thúc</label>
+                                    <input type="date" class="form-control" id="endDate" [ngClass]="(createForm.get('endDate')!.touched || createForm.get('endDate')!.dirty)
+                                                && createForm.get('endDate')!.errors ? 'is-invalid' : '' || 
+                                                (createForm.get('endDate')!.touched || createForm.get('endDate')!.dirty) &&
+                                                !createForm.get('endDate')!.invalid ? 'is-valid' : ''"
+                                        formControlName="endDate">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-12">
+                            <div class="checkbox-item">
+                                <label for="maxAge" class="form-label card-title text-dark">Vùng miền</label><br>
+                                <div class="d-inline" [ngClass]="i === 0 ? 'mr-1' : 'mx-1'"
+                                    *ngFor="let country of countries; let i = index">
+                                    <input type="checkbox" class="btn-check" id="btn-check-outlined-country-{{ i }}"
+                                        autocomplete="off">
+                                    <label class="btn btn-sm btn-outline-dark rounded mb-1"
+                                        for="btn-check-outlined-country-{{ i }}"
+                                        (click)="addToCountries(country.name)">{{
+                                        country.name
+                                        }}</label>
+                                </div>
+                            </div>
+                            <div class="checkbox-item">
+                                <label for="maxAge" class="form-label card-title text-dark">Giới tính</label><br>
+                                <div class="d-inline" [ngClass]="i === 0 ? 'mr-1' : 'mx-1'"
+                                    *ngFor="let gender of genders; let i = index">
+                                    <input type="checkbox" class="btn-check" id="btn-check-outlined-gender-{{ i }}"
+                                        autocomplete="off">
+                                    <label class="btn btn-sm btn-outline-dark rounded mb-1"
+                                        for="btn-check-outlined-gender-{{ i }}" (click)="addToGenders(gender.name)">{{
+                                        gender.name
+                                        }}</label>
+                                </div>
+                            </div>
+                            <div class="checkbox-item">
+                                <label for="maxAge" class="form-label card-title text-dark">Loại giọng</label><br>
+                                <div class="col d-inline" [ngClass]="i === 0 ? 'mr-1' : 'mx-1'"
+                                    *ngFor="let voiceStyle of voiceStyles; let i = index">
+                                    <input type="checkbox" class="btn-check" id="btn-check-outlined-voice-{{ i }}"
+                                        autocomplete="off">
+                                    <label class="btn btn-sm btn-outline-dark rounded mb-1"
+                                        for="btn-check-outlined-voice-{{ i }}"
+                                        (click)="addToVoiceStyles(voiceStyle.name)">{{
+                                        voiceStyle.name
+                                        }}</label>
+                                </div>
+                            </div>
+                            <div class="checkbox-item">
+                                <label for="maxAge" class="form-label card-title text-dark">Mục đích</label><br>
+                                <div class="col d-inline" [ngClass]="i === 0 ? 'mr-1' : 'mx-1'"
+                                    *ngFor="let usagePurpose of usagePurposes; let i = index">
+                                    <input type="checkbox" class="btn-check" id="btn-check-outlined-usage-{{ i }}"
+                                        autocomplete="off">
+                                    <label class="btn btn-sm btn-outline-dark rounded mb-1"
+                                        for="btn-check-outlined-usage-{{ i }}"
+                                        (click)="addToUsagePurposes(usagePurpose.name)">{{
+                                        usagePurpose.name
+                                        }}</label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row mt-5">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-dark w-100 text-uppercase fontweight-bold float-right">
+                                <span *ngIf="!btnCreateLoading">Tạo Dự Án</span>
+                                <span *ngIf="btnCreateLoading">
+                                    <span class="spinner-border spinner-border-sm" role="status"
+                                        aria-hidden="true"></span>
+                                    <span class="sr-only"></span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </form><!-- End Multi Columns Form -->
+
+            </div>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,504 @@
+<main id="main" class="main">
+    <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="default" color="#ffc107" type="ball-scale-multiple"
+        [fullScreen]="true">
+        <p class="text-warning">Đang xử lý...</p>
+    </ngx-spinner>
+    <div *ngIf="!loading" class="loading-spinner d-flex justify-content-center my-auto">
+        <div class="spinner-border my-auto text-primary" role="status">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+
+    <div *ngIf="loading" class="content">
+        <div class="row">
+            <div class="pagetitle">
+                <h1 class="fontweight-bold pointer" (click)="getProjectById()">Chi Tiết Công Việc</h1>
+                <nav>
+                    <ol class="breadcrumb fontweight-italic">
+                        <li class="breadcrumb-item">Trang Chủ</li>
+                        <li class="breadcrumb-item">Công Việc</li>
+                        <li class="breadcrumb-item active">Chi Tiết Công Việc</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <!-- End Page Title -->
+
+        <div *ngIf="projectDetail" class="section profile">
+            <div class="row">
+                <div class="col-lg-4 d-flex">
+                    <div class="card flex-fill">
+                        <div class="card-header bg-dark text-warning text-center fontweight-bold rounded-b">
+                            Chủ Dự Án</div>
+                        <div class="card-body">
+                            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                                <img src="{{ projectDetail.poster.avatar || defaultAvatar }}" alt="Profile"
+                                    class="center-cropped rounded-circle my-auto" />
+                                <h2>
+                                    {{ projectDetail.poster.firstName }}
+                                    {{ projectDetail.poster.lastName }}
+                                </h2>
+                                <h3>{{ projectDetail.poster.email }}</h3>
+                            </div>
+                            <div class="status w-50 mx-auto">
+                                <span [ngClass]="{
+                                    'bg-primary': projectDetail.status === 'Process',
+                                    'bg-success': projectDetail.status === 'Done',
+                                    'bg-danger': projectDetail.status === 'Delete',
+                                    'bg-secondary': projectDetail.status === 'Deny',
+                                    'bg-info': projectDetail.status === 'Pending',
+                                    'bg-warning': projectDetail.status === 'Waiting'
+                                  }" class="badge text-truncate rounded p-3 w-100">{{ projectDetail.status | status
+                                    }}</span>
+                            </div>
+                            <button *ngIf="projectReady" class="btn btn-dark mt-3 w-100" (click)="carryOutProject()">
+                                <span *ngIf="!btnCarryLoading">Tiến Hành Dự Án</span>
+                                <span *ngIf="btnCarryLoading">
+                                    <span class="spinner-border spinner-border-sm" role="status"
+                                        aria-hidden="true"></span>
+                                    <span class="sr-only"></span>
+                                </span>
+                            </button>
+                            <button *ngIf="canMakeDone && projectDetail.status == 'Process'"
+                                class="btn btn-dark mt-3 w-100" (click)="finishProject()"><i
+                                    class="bi bi-calendar2-check"></i>
+                                Hoàn Thành Dự Án</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8 d-flex">
+                    <div class="card flex-fill">
+                        <div class="card-body">
+                            <h5 class="card-title fontweight-bold">{{ projectDetail.name }}</h5>
+                            <p class="text-black">{{ projectDetail.description }}</p>
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <p class="text-black fontweight-bold text-muted">Ngày bắt đầu</p>
+                                    <p class="badge text-truncate bg-primary mx-1 rounded p-2">{{
+                                        projectDetail.startDate | date:
+                                        'shortDate' }}</p>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <p class="text-black fontweight-bold text-muted">Ngày kết thúc</p>
+                                    <p class="badge text-truncate bg-danger mx-1 rounded p-2">{{ projectDetail.endDate |
+                                        date:
+                                        'shortDate' }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <p class="text-black fontweight-bold text-muted">Yêu cầu giọng</p>
+                                    <p *ngFor="let gender of projectDetail.projectGenders"
+                                        class="badge text-truncate bg-dark mx-1 rounded p-2">
+                                        {{ gender }}
+                                    </p>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <p class="text-black fontweight-bold text-muted">Vùng miền</p>
+                                    <p *ngFor="let country of projectDetail.projectCountries"
+                                        class="badge text-truncate bg-dark mx-1 rounded p-2">
+                                        {{ country }}
+                                    </p>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <p class="text-black fontweight-bold text-muted">Độ tuổi</p>
+                                    <p class="badge text-truncate bg-dark mx-1 rounded p-2">
+                                        Từ {{ projectDetail.minAge }} tuổi
+                                    </p>
+                                    <p class="badge text-truncate bg-dark mx-1 rounded p-2">
+                                        Đến {{ projectDetail.maxAge }} tuổi
+                                    </p>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <p class="text-black fontweight-bold text-muted">Chất giọng</p>
+                                    <p *ngFor="let voiceStyle of projectDetail.projectVoiceStyles"
+                                        class="badge text-truncate bg-dark mx-1 rounded p-2">
+                                        {{ voiceStyle }}
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-lg-8 col-md-8 col-sm-8">
+                                    <span class="fontweight-bold">Thành viên dự án</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="mt-4" *ngIf="projectDetail.artistProject.length < 1">
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    Chưa có bất kỳ người nào tham gia gự án này!
+                                </div>
+                            </div>
+                            <div *ngFor="let artist of projectDetail.artistProject; let i = index" class="card mt-3">
+                                <div class="card-body profile-card pt-4 d-flex flex-column">
+                                    <div class="row">
+                                        <div class="col-sm-4 text-center">
+                                            <span class="helper"></span>
+                                            <img src="{{
+                            artist.quickArtistResponse.avatar || defaultAvatar
+                          }}" alt="Profile" class="center artist-project-avatar rounded-circle" />
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <div class="row">
+                                                <div class="col-6 col-sm-6">
+                                                    <a class="pointer" data-bs-toggle="modal"
+                                                        data-bs-target="#artistModal"
+                                                        (click)="getArtistProject(artist.quickArtistResponse.id)">
+                                                        <h5 class="card-title text-truncate">
+                                                            {{ artist.quickArtistResponse.firstName }}
+                                                            {{ artist.quickArtistResponse.lastName }}
+                                                        </h5>
+                                                    </a>
+                                                </div>
+                                                <div class="col-6 col-sm-6 button-y-auto">
+                                                    <span [ngClass]="{
+                                'bg-info': artist.status == 'Accept',
+                                'bg-danger': artist.status == 'Deny',
+                                'bg-primary': artist.status == 'InvitePending',
+                                'bg-warning': artist.status == 'ResponsePending',
+                                'bg-success': artist.status == 'Done'
+                              }" class="badge text-truncate w-100 p-2">
+                                                        {{ artist.status | status }}</span>
+                                                </div>
+                                            </div>
+                                            <h3>{{ artist.quickArtistResponse.email }}</h3>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="artist.status == 'ResponsePending'" class="action mt-3">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                <button class="btn btn-sm btn-success w-100"
+                                                    (click)="acceptArtist(artist.quickArtistResponse.id)">Chấp
+                                                    Nhận</button>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                <button class="btn btn-sm btn-danger w-100"
+                                                    (click)="denyArtist(artist.quickArtistResponse.id)">Từ Chối</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-3" *ngIf="canFinishButton(i)">
+                                        <form [formGroup]="rateArtistForm"
+                                            (ngSubmit)="makeArtistDone(artist.quickArtistResponse.id)">
+                                            <textarea class="form-control w-100 mb-3" formControlName="comment" rows="3"
+                                                [ngClass]="(rateArtistForm.get('comment')!.touched || rateArtistForm.get('comment')!.dirty)
+                                                    && rateArtistForm.get('comment')!.errors ? 'is-invalid' : '' || 
+                                                    (rateArtistForm.get('comment')!.touched || rateArtistForm.get('comment')!.dirty) &&
+                                                    !rateArtistForm.get('comment')!.invalid ? 'is-valid' : ''"></textarea>
+                                            <div class="mb-3">
+                                                <bar-rating formControlName="rate" id="voice-rate" [max]="5"
+                                                    [required]="true">
+                                                    <ng-template ratingActive>
+                                                        <i class="bi bi-star-fill"
+                                                            style="margin: 2px; color: #edb867"></i>
+                                                    </ng-template>
+                                                    <ng-template ratingInactive>
+                                                        <i class="bi bi-star-fill"
+                                                            style="margin: 2px; color: #d2d2d2"></i>
+                                                    </ng-template>
+                                                    <ng-template ratingFraction>
+                                                        <i class="bi bi-star-half"
+                                                            style="margin: 2px; color: #edb867"></i>
+                                                    </ng-template>
+                                                </bar-rating>
+                                            </div>
+                                            <button type="submit" class="btn btn-sm btn-dark w-100">Kết Thúc Công
+                                                Việc</button>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div *ngIf="projectDetail.status == 'Pending'">
+                                <button class="btn btn-sm btn-dark w-100" data-bs-toggle="modal"
+                                    data-bs-target="#listArtistModal" (click)="getListArtist()">Mời</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-lg-8 col-md-8 col-sm-8">
+                                    <span class="fontweight-bold">File kịch bản</span>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-4">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="mt-4"
+                                *ngIf="projectDetail.customerProjectsFiles.length < 1 && projectDetail.status == 'Waiting'">
+                                <div class="input-group">
+                                    <input type="file" class="form-control w-100"
+                                        (change)="uploadScriptToProject($event)">
+                                    <div class="text-muted fontweight-italic mt-2">Dung lượng tối đa <span
+                                            class="text-danger fontweight-bold">20Mb</span></div>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <div *ngIf="projectDetail.customerProjectsFiles.length < 1 && projectDetail.status != 'Waiting'"
+                                    class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    Hiện chưa có file nào được tải lên!
+                                </div>
+                            </div>
+                            <div *ngFor="let file of projectDetail.customerProjectsFiles" class="card mt-3">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-8 col-md-8 col-sm-8">
+                                            <h5 class="card-title text-truncate">
+                                                {{ file.name || "Sample file" }}
+                                            </h5>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-4 button-y-auto">
+                                            <a (click)="downloadFile(file.url, file.name)" class="pointer">
+                                                <span class="btn btn-sm btn-dark w-100">
+                                                    <span>Tải Về</span>
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <p class="text-muted">
+                                            File kịch bản đã sẵn sàng và có thể tải về
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header fontweight-bold">File Audio</div>
+                        <div class="card-body">
+                            <div class="mt-4" *ngIf="projectDetail.artistProjectsFiles.length < 1">
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    Hiện chưa có file nào được tải lên!
+                                </div>
+                            </div>
+                            <div *ngFor="let file of projectDetail.artistProjectsFiles" class="card mt-3">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-8 col-md-8 col-sm-8">
+                                            <h5 class="card-title text-truncate">
+                                                {{ file.name || "Sample file" }}
+                                            </h5>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-4 button-y-auto">
+                                            <span class="badge text-truncate p-2 w-100" [ngClass]="{
+                            'bg-success': file.status == 'Accept',
+                            'bg-danger': file.status == 'Deny',
+                            'bg-primary': file.status == 'Pending'
+                          }">{{ file.status | fileStatus }}</span>
+                                        </div>
+                                    </div>
+                                    <p class="text-danger">
+                                        {{ file.comment }}
+                                    </p>
+                                    <audio controls class="w-100">
+                                        <source src="" type="audio/ogg" />
+                                        <source src="{{ file.url }}" type="audio/mpeg" />
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                    <div *ngIf="file.status == 'Accept'" class="row mt-3">
+                                        <div class="col-ld-8 col-md-8 col-sm-0">
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12">
+                                            <a class="pointer" (click)="downloadAudio(file.voiceId, file.name)">
+                                                <button class="btn btn-sm btn-dark text-truncate w-100">
+                                                    <span>Tải Về</span>
+                                                </button>
+                                            </a>
+
+                                        </div>
+                                    </div>
+                                    <div class="row" *ngIf="file.status == 'Pending'">
+                                        <form [formGroup]="responseForm">
+                                            <div class="comment mb-3">
+                                                <label for="description" class="form-label"> <span
+                                                        class="fontweight-bold">Nhận xét</span><span
+                                                        class=" fontweight-italic"> (ít nhất 5 ký tự)</span></label>
+                                                <textarea type="email" class="form-control" id="description" ows="3"
+                                                    formControlName="comment" placeholder="Nhận xét"
+                                                    required=""></textarea>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                                    <button class="btn btn-sm btn-success w-100 text-truncate"
+                                                        (click)="acceptVoice(file.voiceId)">Thanh Toán</button>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                                    <button class="btn btn-sm btn-danger w-100 text-truncate"
+                                                        (click)="denyVoice(file.voiceId)">
+                                                        Từ Chối</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade profile" id="listArtistModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="row">
+                        <form class="col-lg-6 col-md-6 col-sm-6 my-3 mx-auto">
+                            <div class="row">
+                                <div class="col-lg-8 col-md-8 col-sm-8">
+                                    <input type="text" class="form-control" [(ngModel)]="artistSearch" name="query"
+                                        placeholder="Tìm kiếm" title="Enter search keyword" />
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-4">
+                                    <button class="btn btn-primary" type="submit" title="Search"
+                                        (click)="getListArtist()"><i class="bi bi-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-body overflow-auto h-80">
+                        <div *ngIf="listArtist" class="artist">
+                            <div *ngFor="let artist of listArtist; let i = index" class="card mt-3">
+                                <div class="card-body profile-card pt-4 d-flex flex-column">
+                                    <div class="row">
+                                        <div class="col-sm-4 text-center">
+                                            <span class="helper"></span>
+                                            <img src="{{
+                        artist.avatar || defaultAvatar
+                      }}" alt="Profile" class="center artist-project-avatar rounded-circle" />
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <div class="row">
+                                                <div class="col-lg-8 col-md-8 col-sm-8">
+                                                    <a class="pointer">
+                                                        <h5 class="card-title text-truncate">
+                                                            {{ artist.firstName }}
+                                                            {{ artist.lastName }}
+                                                        </h5>
+                                                    </a>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-4 my-auto">
+                                                    <button class="btn btn-sm btn-success w-100"
+                                                        (click)="inviteArtist(artist.id)">Mời</button>
+                                                </div>
+                                            </div>
+                                            <h3>{{ artist.email }}</h3>
+                                            <h3 class="text-primary">{{ artist.price | currency: 'VND' }} / phút</h3>
+                                            <bar-rating [(rate)]="artist.rate" [max]="5" [readOnly]="true">
+                                                <ng-template ratingActive>
+                                                    <i class="bi bi-star-fill" style="margin: 2px; color: #edb867"></i>
+                                                </ng-template>
+                                                <ng-template ratingInactive>
+                                                    <i class="bi bi-star-fill" style="margin: 2px; color: #d2d2d2"></i>
+                                                </ng-template>
+                                                <ng-template ratingFraction>
+                                                    <i class="bi bi-star-half" style="margin: 2px; color: #edb867"></i>
+                                                </ng-template>
+                                            </bar-rating>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="listArtist.length == 0" class="artist">
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                Không tìm thấy nghệ sĩ tương ứng
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade profile" id="artistModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="card">
+                            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                                <img src="{{ artistProject.quickArtistResponse.avatar || defaultAvatar }}" alt="Profile"
+                                    class="center-cropped rounded-circle">
+                                <h2>{{ artistProject.quickArtistResponse.firstName }} {{
+                                    artistProject.quickArtistResponse.lastName }} </h2>
+                                <h3>{{ artistProject.quickArtistResponse.email }}</h3>
+                                <bar-rating [(rate)]="artistProject.quickArtistResponse.rate" [max]="5"
+                                    [readOnly]="true">
+                                    <ng-template ratingActive>
+                                        <i class="bi bi-star-fill" style="margin: 2px; color: #edb867"></i>
+                                    </ng-template>
+                                    <ng-template ratingInactive>
+                                        <i class="bi bi-star-fill" style="margin: 2px; color: #d2d2d2"></i>
+                                    </ng-template>
+                                    <ng-template ratingFraction>
+                                        <i class="bi bi-star-half" style="margin: 2px; color: #edb867"></i>
+                                    </ng-template>
+                                </bar-rating>
+                                <div *ngIf="voiceDemoLoading" class="mt-3">
+                                    <span class="spinner-border spinner-border-sm" role="status"
+                                        aria-hidden="true"></span>
+                                    <span class="sr-only"></span>
+                                </div>
+                                <div *ngIf="!voiceDemoLoading" class="col voice-demo mt-3 w-100">
+                                    <audio *ngFor="let voice of artistVoiceDemo" #audio controls class="w-100 mb-1">
+                                        <source src="" type="audio/ogg" />
+                                        <source src="{{ voice.url }}" type="audio/mpeg" />
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="content mt-3">
+                                    <p *ngIf="artistProject.joinedDate" class="fontweight-italic">Ngày tham gia dự án
+                                        <span class="card-title">{{
+                                            artistProject.joinedDate | date:'shortDate' }}</span>
+                                    </p>
+                                    <p *ngIf="artistProject.requestedDate" class="fontweight-italic">Ngày yêu cầu tham
+                                        gia <span class="card-title">{{
+                                            artistProject.requestedDate | date:'shortDate' }}</span></p>
+                                    <p *ngIf="artistProject.invitedDate" class="fontweight-italic">Ngày được mời <span
+                                            class="card-title">{{
+                                            artistProject.invitedDate | date:'shortDate' }}</span></p>
+                                    <p *ngIf="artistProject.finishedDate" class="fontweight-italic">Ngày hoàn thành dự
+                                        án <span class="card-title">{{
+                                            artistProject.finishedDate | date:'shortDate' }}</span></p>
+                                    <p *ngIf="artistProject.reviewDate" class="fontweight-italic">Ngày đánh giá dự án
+                                        <span class="card-title">{{
+                                            artistProject.reviewDate | date:'shortDate' }}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="!projectDetail" class="alert alert-warning alert-dismissible fade show" role="alert">
+            Dự án không tồn tại, vui lòng thử lại!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+    </div>
+</main>

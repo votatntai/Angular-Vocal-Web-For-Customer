@@ -1,0 +1,134 @@
+<main>
+    <div class="container">
+
+        <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+                        <div class="d-flex justify-content-center py-4">
+                            <a routerLink="" class="logo d-flex align-items-center w-auto">
+                                <!-- <img src="assets/img/logo.png" alt=""> -->
+                                <span class="d-none d-lg-block text-uppercase">Vocal</span>
+                            </a>
+                        </div><!-- End Logo -->
+
+                        <div class="card mb-3">
+
+                            <div class="card-body">
+
+                                <div class="pt-4 pb-2">
+                                    <h5 class="card-title text-center pb-0 fs-4">Đăng Ký Tài Khoản</h5>
+                                    <p class="text-center small">Nhập đầy đủ thông tin để tiến hành đăng ký</p>
+                                </div>
+
+                                <form [formGroup]="registerForm" (ngSubmit)="register()"
+                                    class="row g-3 needs-validation" novalidate>
+
+                                    <div class="col-6">
+                                        <label for="firstName" class="form-label">Họ</label>
+                                        <input type="text" formControlName="firstName" class="form-control"
+                                            id="firstName" required [ngClass]="(registerForm.get('firstName')!.touched || registerForm.get('firstName')!.dirty)
+                                                && registerForm.get('firstName')!.errors ? 'is-invalid' : '' || 
+                                                (registerForm.get('firstName')!.touched || registerForm.get('firstName')!.dirty) &&
+                                                !registerForm.get('firstName')!.invalid ? 'is-valid' : ''">
+                                    </div>
+
+                                    <div class="col-6">
+                                        <label for="lastName" class="form-label">Tên</label>
+                                        <input type="text" formControlName="lastName" class="form-control" id="lastName"
+                                            required [ngClass]="(registerForm.get('lastName')!.touched || registerForm.get('lastName')!.dirty)
+                                                && registerForm.get('lastName')!.errors ? 'is-invalid' : '' || 
+                                                (registerForm.get('lastName')!.touched || registerForm.get('lastName')!.dirty) &&
+                                                !registerForm.get('lastName')!.invalid ? 'is-valid' : ''">
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="username" class="form-label">Username</label>
+                                        <input type="text" formControlName="username" class="form-control" id="username"
+                                            required [ngClass]="(registerForm.get('username')!.touched || registerForm.get('username')!.dirty)
+                                                && registerForm.get('username')!.errors ? 'is-invalid' : '' || 
+                                                (registerForm.get('username')!.touched || registerForm.get('username')!.dirty) &&
+                                                !registerForm.get('username')!.invalid ? 'is-valid' : ''">
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" formControlName="email" class="form-control" id="email"
+                                            required [ngClass]="(registerForm.get('email')!.touched || registerForm.get('email')!.dirty)
+                                                && registerForm.get('email')!.errors ? 'is-invalid' : '' || 
+                                                (registerForm.get('email')!.touched || registerForm.get('email')!.dirty) &&
+                                                !registerForm.get('email')!.invalid ? 'is-valid' : ''">
+                                    </div>
+
+                                    <div class="col-6">
+                                        <label for="phone" class="form-label">Số điện thoại</label>
+                                        <div class="input-group has-validation">
+                                            <input type="tel" formControlName="phone" class="form-control" id="phone"
+                                                required [ngClass]="(registerForm.get('phone')!.touched || registerForm.get('phone')!.dirty)
+                                                && registerForm.get('phone')!.errors ? 'is-invalid' : '' || 
+                                                (registerForm.get('phone')!.touched || registerForm.get('phone')!.dirty) &&
+                                                !registerForm.get('phone')!.invalid ? 'is-valid' : ''">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <label for="gender" class="form-label">Giới tính</label>
+                                        <select id="gender" class="form-select" formControlName="gender" [ngClass]="(registerForm.get('gender')!.touched || registerForm.get('gender')!.dirty)
+                                                && registerForm.get('gender')!.errors ? 'is-invalid' : '' || 
+                                                (registerForm.get('gender')!.touched || registerForm.get('gender')!.dirty) &&
+                                                !registerForm.get('gender')!.invalid ? 'is-valid' : ''">
+                                            <option value="Nam" selected>Nam</option>
+                                            <option value="Nữ">Nữ</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <label for="password" class="form-label">Mật khẩu</label>
+                                        <input type="password" formControlName="password" class="form-control"
+                                            id="password" required [ngClass]="(registerForm.get('password')!.touched || registerForm.get('password')!.dirty)
+                                                && registerForm.get('password')!.errors ? 'is-invalid' : '' || 
+                                                (registerForm.get('password')!.touched || registerForm.get('password')!.dirty) &&
+                                                !registerForm.get('password')!.invalid ? 'is-valid' : ''">
+                                    </div>
+
+                                    <div class="col-6">
+                                        <label for="re-password" class="form-label">Nhập lại mật khẩu</label>
+                                        <input type="password" formControlName="rePassword" class="form-control"
+                                            id="rePassword" required [ngClass]="(registerForm.get('rePassword')!.touched || registerForm.get('rePassword')!.dirty)
+                                                && registerForm.get('rePassword')!.errors ? 'is-invalid' : '' || 
+                                                (registerForm.get('rePassword')!.touched || registerForm.get('rePassword')!.dirty) &&
+                                                !registerForm.get('rePassword')!.invalid ? 'is-valid' : ''">
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            <input class="form-check-input" formControlName="conditions" type="checkbox"
+                                                value="" id="acceptTerms" required [ngClass]="(registerForm.get('conditions')!.touched || registerForm.get('conditions')!.dirty)
+                                                && registerForm.get('conditions')!.errors ? 'is-invalid' : '' || 
+                                                (registerForm.get('conditions')!.touched || registerForm.get('conditions')!.dirty) &&
+                                                !registerForm.get('conditions')!.invalid ? 'is-valid' : ''">
+                                            <label class="form-check-label" for="acceptTerms">Tôi đồng ý với <a
+                                                    href="#">điều khoản sử dụng</a></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <button class="btn btn-outline-primary w-100" type="submit"
+                                            [ngClass]="!registerForm.valid ? 'disabled':''">Đăng Ký</button>
+                                    </div>
+                                    <div class="col-12">
+                                        <p class="small mb-0">Đã có tài khoản? <a routerLink="">Đăng nhập</a></p>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+</main><!-- End #main -->
